@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj ćwiczenie</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-save {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background-color: #3c9e42;
+        }
+
+        .btn-back {
+            background-color: #ccc;
+            color: #333;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+        }
+
+        .btn-back:hover {
+            background-color: #bbb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 th:text="'Dodaj ćwiczenie do dnia ' + ${selectedDate}">Dodaj ćwiczenie</h2>
+
+    <form th:action="@{/add-exercise}" method="post">
+        <input type="hidden" name="date" th:value="${selectedDate}"/>
+
+        <label for="exerciseId">Wybierz ćwiczenie:</label>
+        <select name="exerciseId" id="exerciseId" required>
+            <option th:each="exercise : ${exercises}"
+                    th:value="${exercise.id}"
+                    th:text="${exercise.name}">
+            </option>
+        </select>
+
+        <label for="duration">Czas trwania (minuty):</label>
+        <input type="number" name="durationInMinutes" id="duration" min="1" required />
+
+        <div class="actions">
+            <a th:href="@{/dashboard(day=${selectedDate})}" class="btn-back">Powrót</a>
+            <button type="submit" class="btn btn-save">Zapisz</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

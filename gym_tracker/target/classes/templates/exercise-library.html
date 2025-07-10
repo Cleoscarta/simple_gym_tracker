@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteka ćwiczeń</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+        }
+
+        .btn-edit {
+            background-color: #ffc107;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h2 {
+            margin: 0;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-add {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-back {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        select {
+            padding: 6px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f1f1f1;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .filter {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>Biblioteka ćwiczeń</h2>
+        <div class="buttons">
+            <a th:href="@{/exercises/add}" class="btn btn-add">Dodaj ćwiczenie</a>
+            <a th:href="@{/dashboard}" class="btn btn-back">Powrót</a>
+        </div>
+    </div>
+
+    <form method="get" th:action="@{/exercises}" class="filter">
+        <label>Filtruj po kategorii:
+            <select name="category" onchange="this.form.submit()">
+                <option value="">Wszystkie</option>
+                <option th:each="cat : ${categories}"
+                        th:value="${cat}"
+                        th:text="${cat}"
+                        th:selected="${cat == selectedCategory}">
+                </option>
+            </select>
+        </label>
+    </form>
+
+    <div th:if="${error}" style="color: red; margin-top: 15px;">
+        <p th:text="${error}"></p>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nazwa ćwiczenia</th>
+            <th>Kategoria</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ex : ${exercises}">
+            <td th:text="${ex.name}"></td>
+            <td th:text="${ex.category}"></td>
+            <td>
+                <a th:href="@{'/exercises/edit/' + ${ex.id}}" class="btn btn-edit">Edytuj</a>
+                <form th:action="@{'/exercises/delete/' + ${ex.id}}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-delete" onclick="return confirm('Czy na pewno chcesz usunąć to ćwiczenie?');">Usuń</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+</body>
+</html>

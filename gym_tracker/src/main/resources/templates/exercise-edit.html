@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edytuj ćwiczenie</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f6f8; }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: 50px auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Edytuj ćwiczenie</h2>
+    <form th:action="@{'/exercises/edit/' + ${exercise.id}}" method="post">
+        <label>Nazwa ćwiczenia:</label>
+        <input type="text" name="name" th:value="${exercise.name}" required />
+
+        <label>Kategoria:</label>
+        <input type="text" name="category" th:value="${exercise.category}" required />
+
+        <button type="submit">Zapisz zmiany</button>
+    </form>
+</div>
+</body>
+</html>
