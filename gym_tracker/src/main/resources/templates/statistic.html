@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Exercise Statistic</title>
+</head>
+<body>
+<h1>Exercise Statistic</h1>
+
+<form method="get" action="/statistic">
+  <label>Exercise Name:
+    <input type="text" name="exerciseName" required>
+  </label><br>
+
+  <label>Start Date:
+    <input type="date" name="startDate" required>
+  </label><br>
+
+  <label>End Date:
+    <input type="date" name="endDate" required>
+  </label><br>
+
+  <button type="submit">Get Statistic</button>
+</form>
+
+<div th:if="${total != null}">
+  <h2>Results for <span th:text="${exerciseName}"></span></h2>
+  <p>Total duration from <span th:text="${startDate}"></span> to <span th:text="${endDate}"></span>: <span th:text="${total}"></span> minutes</p>
+</div>
+
+</body>
+</html>

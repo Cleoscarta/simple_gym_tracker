@@ -7,6 +7,9 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f0f2f5;
             margin: 0; padding: 0;
+            display: flex;
+            flex-direction: column; /* Ustawienie dla stopki */
+            min-height: 100vh; /* Minimalna wysokość, aby stopka była na dole */
         }
 
         .container {
@@ -16,6 +19,7 @@
             background: #ffffff;
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            flex-grow: 1; /* Pozwala kontenerowi rosnąć i zepchnąć stopkę na dół */
         }
 
         .header {
@@ -128,6 +132,20 @@
         button:hover {
             background-color: #005fcc;
         }
+
+        /* Styl dla stopki */
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 40px; /* Odstęp od głównej treści */
+            width: 100%;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -140,27 +158,23 @@
         <a th:href="@{/logout}" class="add-button">Wyloguj</a>
     </div>
 
-    <!-- Wybór dnia -->
     <form method="get" action="/dashboard">
         <label for="day">Wybierz dzień:</label>
         <input type="date" id="day" name="day" th:value="${selectedDay}">
         <button type="submit">Pokaż</button>
     </form>
 
-    <!-- Nawigacja -->
     <div class="week-nav">
         <a th:href="@{/dashboard(day=${selectedDay.minusWeeks(1)})}">← Poprzedni tydzień</a>
         <a th:href="@{/dashboard(day=${selectedDay.plusWeeks(1)})}">Następny tydzień →</a>
     </div>
 
-    <!-- Kalendarz -->
     <div class="calendar">
         <div th:each="day : ${weekDates}" class="day">
             <a th:href="@{/dashboard(day=${day})}" th:text="${#temporals.format(day, 'EEEE dd.MM')}"></a>
         </div>
     </div>
 
-    <!-- Treningi -->
     <div class="workouts">
         <h3 th:text="'Trening na: ' + ${#temporals.format(selectedDay, 'dd.MM.yyyy')}"></h3>
         <ul>
@@ -178,5 +192,18 @@
         </a>
     </div>
 </div>
+
+<div class="footer">
+    <h4>Aktualne Streaki:</h4>
+    <div th:if="${#maps.isEmpty(exerciseStreaks)}">
+        <p>Brak aktywnych streaków.</p>
+    </div>
+    <div th:unless="${#maps.isEmpty(exerciseStreaks)}">
+        <p th:each="entry : ${exerciseStreaks}">
+            <span th:text="${entry.key}"></span>: <strong th:text="${entry.value}"></strong> dni
+        </p>
+    </div>
+</div>
+
 </body>
 </html>

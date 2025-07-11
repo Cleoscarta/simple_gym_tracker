@@ -21,5 +21,7 @@ public interface WorkoutRepository extends JpaRepository<Workout, Long> {
     int sumDurationByUserAndDateBetween(@Param("user") User user,
                                         @Param("start") LocalDate start,
                                         @Param("end") LocalDate end);
+
+    List<Workout> findByUserAndExerciseOrderByDateDesc(User user, Exercise exercise);
 }
 
